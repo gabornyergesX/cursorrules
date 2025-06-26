@@ -48,7 +48,7 @@ create_modular_rules() {
     # Add selected modules
     for module in "${selected_modules[@]}"; do
         if [ -f "$CURSOR_RULES_DIR/rules/${module}.md" ]; then
-            echo "# === $(echo ${module^^} | tr '-' ' ') RULES ===" >> "$output_file"
+            echo "# === $(echo "$module" | tr 'a-z-' 'A-Z ') RULES ===" >> "$output_file"
             cat "$CURSOR_RULES_DIR/rules/${module}.md" >> "$output_file"
             echo "" >> "$output_file"
         fi
