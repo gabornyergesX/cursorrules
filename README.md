@@ -25,15 +25,32 @@ cursorrules/
 
 ## Usage
 
-### For New Projects
-1. Clone or symlink this repository into your project root
-2. Run `./scripts/setup.sh` to create appropriate symlinks
-3. Customize project-specific rules if needed
+### Quick Start
+```bash
+# Navigate to your project
+cd /path/to/your/project
 
-### For Existing Projects
-1. Navigate to your project root
-2. Create symlink: `ln -sf /path/to/cursorrules/.cursorrules .cursorrules`
-3. Restart Cursor to apply new rules
+# Run interactive setup
+/path/to/cursorrules/scripts/setup.sh
+```
+
+### Setup Options
+1. **Global Symlink** (recommended) - All rules active
+2. **Modular Rules** - Select specific rule modules only
+
+### Command Line Usage
+```bash
+# Show all options
+./scripts/setup.sh --help
+
+# Symlink all rules
+./scripts/setup.sh --mode symlink
+
+# Use specific modules only
+./scripts/setup.sh --mode modular --modules git,kotlin,linear
+```
+
+📖 **See [USAGE.md](./USAGE.md) for detailed usage patterns and examples**
 
 ## Customization
 
