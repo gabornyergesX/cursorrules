@@ -1,0 +1,58 @@
+{
+    "mcpServers": {
+      "Puppeteer": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-puppeteer"
+        ]
+      },
+      "Sequential Thinking": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-sequential-thinking"
+        ]
+      },
+      "Brave Search": {
+        "command": "op",
+        "args": [
+          "run",
+          "--account",
+          "my.1password.com",
+          "--",
+          "npx",
+          "-y",
+          "@modelcontextprotocol/server-brave-search"
+        ],
+        "env": {
+          "BRAVE_API_KEY": "op://Development/brave/password"
+        }
+      },
+      "git": {
+        "command": "uvx",
+        "args": [
+          "mcp-server-git"
+        ]
+      },
+      "GitHub": {
+        "command": "op",
+        "args": [
+          "run",
+          "--account",
+          "my.1password.com",
+          "--",
+          "docker",
+          "run",
+          "--rm",
+          "-i",
+          "--env",
+          "GITHUB_PERSONAL_ACCESS_TOKEN",
+          "ghcr.io/github/github-mcp-server:edge"
+        ],
+        "env": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "op://Development/Github/token"
+        }
+      }
+    }
+  }

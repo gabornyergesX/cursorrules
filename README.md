@@ -20,7 +20,8 @@ cursorrules/
 │   └── web-project.md      # Web project specific additions
 └── scripts/               # Utility scripts
     ├── setup.sh           # Setup script for new projects
-    └── update.sh          # Update existing symlinks
+    ├── update.sh          # Update existing symlinks
+    └── install-mcp-config.sh # Install MCP config to ~/.cursor
 ```
 
 ## Usage
@@ -33,6 +34,16 @@ cd /path/to/your/project
 # Run interactive setup
 /path/to/cursorrules/scripts/setup.sh
 ```
+
+### Install MCP Configuration
+To install or update your MCP server configuration (e.g., for GitHub, Brave Search, etc.) in `~/.cursor/mcp.json`:
+
+```bash
+bash scripts/install-mcp-config.sh
+```
+- Asks for confirmation before overwriting any existing config
+- Backs up previous config with a timestamp
+- Uses the same color-coded output as other scripts
 
 ### Setup Options
 1. **Global Symlink** (recommended) - All rules active
@@ -52,6 +63,20 @@ cd /path/to/your/project
 
 📖 **See [USAGE.md](./USAGE.md) for detailed usage patterns and examples**
 
+## MCP Server Integration
+
+Current MCP servers configured:
+- 🤖 **Puppeteer** - Web automation and testing
+- 🧠 **Sequential Thinking** - Complex reasoning and planning
+- 🔍 **Brave Search** - Web search capabilities (1Password secured)
+- 📦 **Git** - Version control operations
+- 🐙 **GitHub** - Repository management (Docker + 1Password secured)
+
+### Security Features
+- 🔐 **1Password Integration** - Secure API key management for GitHub and Brave Search
+- 🐳 **Docker Containerization** - GitHub MCP server runs in isolated container
+- 🔑 **Token Isolation** - No hardcoded credentials in configuration
+
 ## Customization
 
 The modular structure allows you to:
@@ -59,11 +84,12 @@ The modular structure allows you to:
 - Add project-specific rules without affecting the global set
 - Maintain consistency across all projects while allowing flexibility
 
-## Tools Integration
+## Rule Categories
 
-Current integrations:
-- ✅ Linear (task management)
-- ✅ Notion (documentation)
-- ✅ Git (version control)
-- ✅ GitHub (platform features)
-- ✅ Kotlin (primary language) 
+Current rule modules:
+- ✅ **Base** - Core development principles
+- ✅ **Git** - Version control workflows
+- ✅ **GitHub** - Platform features + open source contribution guide
+- ✅ **Kotlin** - JVM language best practices
+- ✅ **Linear** - Task management integration
+- ✅ **Notion** - Documentation management 
