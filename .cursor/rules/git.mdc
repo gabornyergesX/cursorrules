@@ -1,0 +1,85 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Git Version Control Rules
+
+## Commit Best Practices
+
+### Commit Messages
+- Use conventional commit format: `type(scope): description`
+- Types: feat, fix, docs, style, refactor, test, chore
+- Keep subject line under 50 characters
+- Use imperative mood: "Add feature" not "Added feature"
+- Separate subject from body with blank line
+- Explain what and why, not how
+
+### Commit Frequency
+- Commit early and often with logical units of work
+- Each commit should represent a single logical change
+- Avoid commits that mix multiple concerns
+- Use interactive rebase to clean up commit history before pushing
+
+## Branch Management
+
+### Branch Naming
+- Use descriptive names: `feature/user-authentication`
+- Include ticket numbers: `bug/fix-login-error-123`
+- Use lowercase with hyphens, not underscores
+- Keep branch names concise but meaningful
+
+### Branch Strategy
+- Use feature branches for new development
+- Keep main/master branch stable and deployable
+- Use pull/merge requests for code review
+- Delete merged branches to keep repository clean
+
+## Repository Hygiene
+
+### .gitignore Management
+- Include language-specific ignore patterns
+- Ignore build artifacts, dependencies, IDE files
+- Never commit secrets, passwords, or API keys
+- Use global gitignore for personal preferences
+
+### File Management
+- Track only source files, not generated content
+- Use .gitattributes for line ending normalization
+- Be mindful of binary file commits (size and history)
+- Use Git LFS for large binary assets when needed
+
+## Collaboration Workflows
+
+### Pull Request Guidelines
+- Create focused PRs with clear scope
+- Include descriptive titles and descriptions
+- Reference related issues: "Fixes #123"
+- Keep PRs reasonably sized (< 400 lines when possible)
+- Respond to feedback constructively
+
+### Code Review
+- Review for logic, security, and maintainability
+- Provide constructive feedback with examples
+- Approve only when confident in changes
+- Use suggestion feature for minor fixes
+
+## Git Configuration
+
+### Essential Settings
+```bash
+git config user.name "Your Name"
+git config user.email "your.email@example.com"
+git config core.autocrlf input  # or true on Windows
+git config init.defaultBranch main
+git config pull.rebase false
+```
+
+### Useful Aliases
+```bash
+git config alias.st status
+git config alias.co checkout
+git config alias.br branch
+git config alias.last 'log -1 HEAD'
+git config alias.unstage 'reset HEAD --'
+```

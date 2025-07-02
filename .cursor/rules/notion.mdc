@@ -1,3 +1,8 @@
+---
+description:
+globs:
+alwaysApply: false
+---
 # Notion Integration Rules
 
 ## MCP Integration
@@ -154,4 +159,4 @@
 - Set up team spaces for internal collaboration
 - Create public pages for external documentation when appropriate
 - Maintain guest access controls
-- Document who has access to what information 
+- Document who has access to what information

@@ -1,0 +1,82 @@
+---
+description: 
+globs: 
+  - "**/*.kt"
+alwaysApply: false
+---
+# ✨ Effective Kotlin Rules ✨
+(Concise, actionable bullets under 500 lines as recommended)
+
+## 1  Safety & Nullability
+- Prefer **`val`** over `var`; make data structures and classes immutable by default (Item 1).  
+- Eliminate platform types ASAP; wrap Java APIs to return non-null or nullable Kotlin types explicitly (Item 3).  
+- Never use **`!!`** in production; rely on safe–call (`?.`), Elvis (`?:`) or `requireNotNull` with a clear message.
+
+## 2  Design & Readability
+- Functions should do **one thing at one level of abstraction** (Item 25).  
+- When a function body is a single expression, use **expression-body syntax** for brevity (`fun f() = …`).  
+- Use **named & default parameters** instead of telescoping overloads (Item 14).  
+- Follow the official Kotlin coding conventions for naming, spacing, and file organisation (Item 18).
+
+## 3  Idiomatic APIs
+- Model pure data with **`data class`** (Item 37); expose an immutable public API and use `copy` for changes.  
+- For constrained hierarchies use **`sealed` classes or interfaces** (Item 39) and make `when` expressions exhaustive.  
+- Prefer **factory functions** (`companion object { fun of(…) }`) to complex constructors (Item 32).  
+- Use **operator functions** only when the symbolic meaning matches the underlying behaviour (Item 11).
+
+## 4  Collections & Performance
+- Use **`Sequence`** pipelines for 2-plus chained operations on large collections (Item 54).  
+- Default to immutable `List`/`Set`/`Map`; switch to mutable variants only when profiling shows a need (Item 59).  
+- For primitive arrays in tight loops prefer `IntArray`, `DoubleArray`, etc. for performance-critical code (Item 58).
+
+## 5  Error-Handling & Contracts
+- Throw exceptions only for truly exceptional states; never for normal control flow (Item 6).  
+- When absence of a value is expected, return `null` or a **sealed `Result` type** rather than throwing (Item 7).  
+- Guard inputs with `require`, `check`, and `assert` at the top of functions (Item 5).
+
+## 6  Inline & Higher-Order Functions
+- Mark functions that take lambdas and are small/​frequently invoked with **`inline`** (Item 51).  
+- Use scope functions deliberately:  
+  - `apply` → configure an object,  
+  - `run` → compute and return a result,  
+  - `also`/`let` → add side-effect or map,  
+  - `with` → act on a receiver without returning it.
+
+## 7  Concurrency with Coroutines
+- Launch coroutines **only inside a CoroutineScope** you control; favour `viewModelScope`, `lifecycleScope`, etc.  
+- Use structured concurrency: never keep references to `Job`s you did not create.  
+- Prefer `suspend` functions to callbacks; expose cold flows (`Flow`, `channelFlow`) for streams.
+
+## 8  Testing & Tooling
+- Every public API should have unit tests (Item 9).  
+- Use the **Kotest**/​JUnit5 DSL with descriptive test names and assertions.  
+- For property-based tests, apply Kotest `forAll` where invariants matter.
+
+---
+
+### Example Snippets
+
+```kotlin
+// Sealed result for safe operations
+sealed interface FileOpResult {
+    data class Success(val uri: Uri) : FileOpResult
+    data class Failure(val message: String, val cause: Throwable? = null) : FileOpResult
+}
+
+// Immutability + copy
+data class User(val id: Id, val email: String) {
+    fun withNewEmail(newEmail: String) = copy(email = newEmail)
+}
+```
+
+Keep each section concise; split this file if it ever grows beyond ~500 lines for maintainability.
+Happy Kotlin-ing! 🚀
+
+
+**Why it works**
+
+- Uses **MDC** front-matter (`description`, `globs`, `alwaysApply`) exactly as Cursor expects.  
+- Scoped to `*.kt`/`*.kts`, so it's "Auto Attached" but not bloating non-Kotlin prompts.  
+- Bullets are directive, specific, and map 1-to-1 with "Effective Kotlin" items, giving the model clear, repeatable guidance.  
+- Under the 500-line best-practice soft limit and includes concrete examples for context enrichment.  
+- Follows the official documentation's guidance on rule format, size, and focus.

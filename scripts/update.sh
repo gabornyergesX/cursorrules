@@ -26,7 +26,9 @@ is_git_repo() {
 
 # Function to find all cursor rules files
 find_cursor_rules() {
-    find "$1" -name ".cursorrules" -type l 2>/dev/null
+    local search_dir="$1"
+    # Find .cursor/rules/ directories
+    find "$search_dir" -path "*/.cursor/rules" -type d 2>/dev/null | sort
 }
 
 # Function to validate symlink
@@ -46,6 +48,76 @@ validate_symlink() {
     fi
 }
 
+# Function to check Project Rules (.cursor/rules/)
+check_project_rules() {
+    local project_root="$1"
+    local cursor_dir="$project_root/.cursor"
+    local rules_dir="$cursor_dir/rules"
+    
+    if [ -d "$rules_dir" ]; then
+        echo -e "${GREEN}✅ Project Rules directory found${NC}"
+        
+        # Check for rule files
+        local rule_count=$(find "$rules_dir" -name "*.mdc" | wc -l)
+        echo "   Rule files: $rule_count"
+        
+        # Check for broken symlinks
+        local broken_links=0
+        for rule_file in "$rules_dir"/*.mdc; do
+            if [ -L "$rule_file" ] && [ ! -e "$rule_file" ]; then
+                broken_links=$((broken_links + 1))
+            fi
+        done
+        
+        if [ $broken_links -gt 0 ]; then
+            echo -e "   ${YELLOW}⚠️  $broken_links broken symlinks found${NC}"
+            return 1
+        else
+            echo -e "   ${GREEN}✅ All symlinks valid${NC}"
+            return 0
+        fi
+    else
+        echo -e "${YELLOW}⚠️  No Project Rules found${NC}"
+        return 2
+    fi
+}
+
+# Function to fix Project Rules
+fix_project_rules() {
+    local project_root="$1"
+    local target_cursor_dir="$project_root/.cursor"
+    local target_rules_dir="$target_cursor_dir/rules"
+    local source_rules_dir="$CURSOR_RULES_DIR/.cursor/rules"
+    
+    echo -e "${YELLOW}[INFO] Fixing Project Rules${NC}"
+    
+    # Create directories if they don't exist
+    mkdir -p "$target_rules_dir"
+    
+    # Remove broken symlinks
+    find "$target_rules_dir" -name "*.mdc" -type l ! -e {} -delete 2>/dev/null || true
+    
+    # Create/update symlinks
+    if [ -d "$source_rules_dir" ]; then
+        for rule_file in "$source_rules_dir"/*.mdc; do
+            if [ -f "$rule_file" ]; then
+                local rule_name=$(basename "$rule_file")
+                local target_file="$target_rules_dir/$rule_name"
+                
+                # Remove existing file/symlink
+                [ -e "$target_file" ] && rm "$target_file"
+                
+                # Create new symlink
+                ln -s "$rule_file" "$target_file"
+                echo -e "${GREEN}✓ Updated $rule_name${NC}"
+            fi
+        done
+    else
+        echo -e "${RED}[ERROR] Source .cursor/rules directory not found${NC}"
+        return 1
+    fi
+}
+
 # Parse command line arguments
 case "${1:-help}" in
     "check")
@@ -62,27 +134,17 @@ case "${1:-help}" in
         if is_git_repo "$PROJECT_DIR"; then
             PROJECT_ROOT=$(git -C "$PROJECT_DIR" rev-parse --show-toplevel)
             echo "📁 Checking project: $PROJECT_ROOT"
+            echo ""
             
-            CURSORRULES_FILE="$PROJECT_ROOT/.cursorrules"
+            # Check Project Rules (.cursor/rules/)
+            echo "🎯 Project Rules (.cursor/rules/):"
+            check_project_rules "$PROJECT_ROOT"
+            project_rules_status=$?
+            echo ""
             
-            if [ -f "$CURSORRULES_FILE" ]; then
-                validate_symlink "$CURSORRULES_FILE" "$CURSOR_RULES_DIR/.cursorrules"
-                case $? in
-                    0)
-                        echo -e "${GREEN}✅ Valid symlink to cursor rules${NC}"
-                        ;;
-                    1)
-                        echo -e "${YELLOW}⚠️  Symlink points to wrong target${NC}"
-                        echo "Current target: $(readlink "$CURSORRULES_FILE")"
-                        echo "Expected target: $CURSOR_RULES_DIR/.cursorrules"
-                        ;;
-                    2)
-                        echo -e "${YELLOW}⚠️  .cursorrules exists but is not a symlink${NC}"
-                        ;;
-                esac
-            else
-                echo -e "${RED}❌ No .cursorrules found${NC}"
-                echo "Run 'setup.sh' to create cursor rules for this project"
+            if [ $project_rules_status -eq 2 ]; then
+                echo -e "${RED}❌ No cursor rules found${NC}"
+                echo "Run 'bash scripts/setup.sh' to create cursor rules for this project"
             fi
         else
             echo -e "${RED}❌ Not a git repository${NC}"
@@ -103,90 +165,125 @@ case "${1:-help}" in
         if is_git_repo "$PROJECT_DIR"; then
             PROJECT_ROOT=$(git -C "$PROJECT_DIR" rev-parse --show-toplevel)
             echo "📁 Fixing project: $PROJECT_ROOT"
+            echo ""
             
-            CURSORRULES_FILE="$PROJECT_ROOT/.cursorrules"
+            # Fix Project Rules
+            fix_project_rules "$PROJECT_ROOT"
             
-            # Remove existing file/symlink
-            if [ -e "$CURSORRULES_FILE" ]; then
-                rm "$CURSORRULES_FILE"
-                echo "🗑️  Removed existing .cursorrules"
-            fi
-            
-            # Create new symlink
-            ln -sf "$CURSOR_RULES_DIR/.cursorrules" "$CURSORRULES_FILE"
-            echo -e "${GREEN}✅ Created new symlink${NC}"
+            echo ""
+            echo -e "${GREEN}✅ Fixed cursor rules symlinks${NC}"
         else
             echo -e "${RED}❌ Not a git repository${NC}"
         fi
         ;;
         
     "scan")
-        echo "🔍 Scanning for projects with cursor rules..."
+        echo "🔍 Scanning for cursor rules in all repositories..."
         echo ""
         
-        SCAN_DIR="${2:-$HOME/dev}"
-        if [ ! -d "$SCAN_DIR" ]; then
-            echo -e "${RED}❌ Directory not found: $SCAN_DIR${NC}"
-            exit 1
+        # Default scan directories
+        SCAN_DIRS=(
+            "$HOME/dev"
+            "$HOME/projects"
+            "$HOME/workspace"
+            "$HOME/code"
+            "$PWD"
+        )
+        
+        # If arguments provided, use those instead
+        if [ $# -gt 1 ]; then
+            SCAN_DIRS=("${@:2}")
         fi
         
-        echo "📂 Scanning directory: $SCAN_DIR"
-        echo ""
+        found_projects=0
         
-        # Find all git repositories
-        find "$SCAN_DIR" -name ".git" -type d 2>/dev/null | while read git_dir; do
-            project_dir=$(dirname "$git_dir")
-            cursorrules_file="$project_dir/.cursorrules"
-            
-            if [ -f "$cursorrules_file" ]; then
-                echo "📁 $(basename "$project_dir")"
-                echo "   Path: $project_dir"
+        for scan_dir in "${SCAN_DIRS[@]}"; do
+            if [ -d "$scan_dir" ]; then
+                echo -e "${BLUE}📂 Scanning: $scan_dir${NC}"
                 
-                validate_symlink "$cursorrules_file" "$CURSOR_RULES_DIR/.cursorrules"
-                case $? in
-                    0)
-                        echo -e "   Status: ${GREEN}✅ Valid${NC}"
-                        ;;
-                    1)
-                        echo -e "   Status: ${YELLOW}⚠️  Wrong target${NC}"
-                        ;;
-                    2)
-                        echo -e "   Status: ${YELLOW}⚠️  Not a symlink${NC}"
-                        ;;
-                esac
+                # Find all git repositories
+                find "$scan_dir" -name ".git" -type d 2>/dev/null | while read -r git_dir; do
+                    project_dir=$(dirname "$git_dir")
+                    project_name=$(basename "$project_dir")
+                    
+                    # Check for cursor rules
+                    rules_dir="$project_dir/.cursor/rules"
+                    
+                    has_project=$([ -d "$rules_dir" ] && echo "true" || echo "false")
+                    
+                    if [ "$has_project" = "true" ]; then
+                        echo -e "   📁 $project_name"
+                        
+                        if [ "$has_project" = "true" ]; then
+                            validate_symlink "$rules_dir/base.mdc" "$CURSOR_RULES_DIR/.cursor/rules/base.mdc" 2>/dev/null
+                            case $? in
+                                0)
+                                    echo -e "   Project Rules: ${GREEN}✅ Valid${NC}"
+                                    ;;
+                                1)
+                                    echo -e "   Project Rules: ${YELLOW}⚠️  Wrong target${NC}"
+                                    ;;
+                                2)
+                                    echo -e "   Project Rules: ${YELLOW}⚠️  Not a symlink${NC}"
+                                    ;;
+                            esac
+                        fi
+                        
+                        found_projects=$((found_projects + 1))
+                    fi
+                done
+                
                 echo ""
             fi
         done
+        
+        if [ $found_projects -eq 0 ]; then
+            echo -e "${YELLOW}No projects with cursor rules found${NC}"
+        else
+            echo -e "${GREEN}Found $found_projects projects with cursor rules${NC}"
+        fi
         ;;
         
-    "version")
+    "info")
         echo "📋 Cursor Rules Repository Information"
         echo ""
-        echo "Repository: $CURSOR_RULES_DIR"
-        if is_git_repo "$CURSOR_RULES_DIR"; then
-            cd "$CURSOR_RULES_DIR"
-            echo "Branch: $(git branch --show-current)"
-            echo "Last commit: $(git log -1 --pretty=format:'%h - %s (%cr)')"
+        echo "Repository Path: $CURSOR_RULES_DIR"
+        echo ""
+        echo "Available Rules:"
+        if [ -d "$CURSOR_RULES_DIR/.cursor/rules" ]; then
+            for rule_file in "$CURSOR_RULES_DIR/.cursor/rules"/*.mdc; do
+                if [ -f "$rule_file" ]; then
+                    rule_name=$(basename "$rule_file" .mdc)
+                    echo "  $rule_name.mdc"
+                fi
+            done
         fi
         echo ""
-        echo "Available rules modules:"
-        ls -1 "$CURSOR_RULES_DIR/rules/"
+        echo "Usage:"
+        echo "  ./update.sh check [project_path]  - Check cursor rules status"
+        echo "  ./update.sh fix [project_path]    - Fix cursor rules symlinks"
+        echo "  ./update.sh scan [directories...]  - Scan for projects with cursor rules"
+        echo "  ./update.sh info                   - Show this information"
         ;;
         
-    "help"|*)
-        echo "Usage: $0 <command> [arguments]"
+    *)
+        echo "🔄 Cursor Rules Update Utility"
         echo ""
-        echo "Commands:"
-        echo "  check [path]     - Check cursor rules for current or specified project"
-        echo "  fix [path]       - Fix broken symlinks for current or specified project"
-        echo "  scan [dir]       - Scan directory for projects with cursor rules (default: ~/dev)"
-        echo "  version          - Show cursor rules repository information"
-        echo "  help             - Show this help message"
+        echo "This utility helps manage cursor rules across multiple projects."
+        echo "It supports the Project Rules format (.cursor/rules/) following"
+        echo "      official Cursor documentation."
+        echo ""
+        echo "Usage:"
+        echo "  $0 check [project_path]   - Check cursor rules status for a project"
+        echo "  $0 fix [project_path]     - Fix cursor rules symlinks for a project"
+        echo "  $0 scan [directories...]  - Scan directories for projects with cursor rules"
+        echo "  $0 info                   - Show repository information"
         echo ""
         echo "Examples:"
-        echo "  $0 check                    # Check current project"
-        echo "  $0 check /path/to/project   # Check specific project"
-        echo "  $0 fix                      # Fix current project"
-        echo "  $0 scan ~/dev               # Scan ~/dev for projects"
+        echo "  $0 check                  - Check current directory"
+        echo "  $0 check ~/my-project     - Check specific project" 
+        echo "  $0 fix                    - Fix current directory"
+        echo "  $0 scan ~/dev ~/projects  - Scan multiple directories"
+        echo "  $0 scan                   - Scan default directories"
         ;;
 esac 

@@ -1,3 +1,8 @@
+---
+description:
+globs:
+alwaysApply: false
+---
 # Base Development Rules
 
 ## Core Programming Principles
@@ -42,4 +47,4 @@
 - Use exceptions for exceptional cases, not control flow
 - Log errors with sufficient context for debugging
 - Handle errors at the appropriate level
-- Provide meaningful fallbacks when possible 
+- Provide meaningful fallbacks when possible

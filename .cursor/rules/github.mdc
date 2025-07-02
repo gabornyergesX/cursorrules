@@ -1,0 +1,114 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# GitHub Community & Collaboration Rules
+
+These guidelines integrate key points from the official [GitHub Community Guidelines](mdc:https:/docs.github.com/en/site-policy/github-terms/github-community-guidelines) to foster a safe, welcoming, and productive environment for all contributors.
+
+## 1. Community Principles
+
+### Be Welcoming & Open-Minded
+- Encourage newcomers and recognize different experience levels.
+- Embrace diverse perspectives and ideas—assume positive intent.
+
+### Be Respectful
+- Critique **ideas**, not **people**. Address contributions with constructive, courteous feedback.
+- Avoid personal attacks, harassment, hate speech, or discriminatory language.
+
+### Be Empathetic
+- Remember GitHub is a global community. Consider cultural and personal differences when communicating.
+- Use inclusive language and be patient when clarifying misunderstandings.
+
+## 2. Contribution Workflow
+
+### Issues
+- Use clear, descriptive titles (e.g., _bug: cannot save settings in Safari_).
+- Provide reproduction steps, expected vs. actual behaviour, and environment details.
+- Label issues appropriately (bug, enhancement, documentation, good-first-issue, etc.).
+
+### Pull Requests
+- Scope each PR to a single logical change; keep under ~400 lines when possible.
+- Follow conventional commit conventions for the title, e.g. `fix(login): prevent empty passwords`.
+- In the description:
+  1. **What**: Summarise the change & link related issues (`Fixes #123`).
+  2. **Why**: Explain the motivation or problem solved.
+  3. **How**: Briefly outline the approach.
+- Include screenshots or demos for UI changes.
+- Check CI status before requesting review.
+
+### Code Review Etiquette
+- Review for correctness, security, performance & maintainability.
+- Leave actionable comments—explain _why_, suggest improvements where possible.
+- Acknowledge good work; approvals should reflect thorough review.
+- Resolve conversations after addressing feedback.
+
+## 3. Repository Health Checklist
+
+Follow GitHub's [healthy contributions](mdc:https:/docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions) recommendations:
+
+1. **Community Health Files (in `.github/`):**
+   - `CODE_OF_CONDUCT.md` – Adopt an inclusive code of conduct (e.g., Contributor Covenant).
+   - `CONTRIBUTING.md` – Explain workflow, coding standards, commit style, and how to run tests.
+   - `SECURITY.md` – Provide vulnerability disclosure process and contact.
+   - `SUPPORT.md` – Point users to docs, discussion boards, or chat for help.
+   - `LICENSE` – Choose an OSI-approved license to clarify usage rights.
+2. **Issue & PR Templates:**
+   - Create `_issue template_` forms to capture reproduction steps, environment, expected behaviour.
+   - Provide `PULL_REQUEST_TEMPLATE.md` to remind contributors about tests, docs, and CI status.
+3. **Labels & Project Boards:**
+   - Use `good first issue` & `help wanted` to highlight starter tasks.
+   - Maintain triage labels (bug, feature, documentation) to streamline contribution flow.
+4. **Automated Checks:**
+   - Enable Dependabot security updates and CodeQL analysis where applicable.
+   - Set up branch protection rules requiring status checks before merge.
+5. **Community Profile:**
+   - Aim for 100 % completion in the _Community Profile_ checklist (Settings ▸ Community Standards).
+6. **Discussions & Moderation Tools:**
+   - Enable _GitHub Discussions_ for open Q&A if the project size warrants.
+   - Use _interaction limits_ during spam or harassment waves.
+
+_Keeping these files and settings up-to-date helps new contributors onboard quickly and fosters a sustainable community._
+
+## 4. Repository Moderation
+
+| Situation | Recommended Action |
+|-----------|--------------------|
+| Off-topic, heated, or abusive discussion | Temporarily **lock** the conversation |
+| Repeated spam or trolling | **Block** the user & report to GitHub Support |
+| Sensitive personal data posted | **Delete** comment & contact support |
+
+Refer to GitHub's moderation tools: comment editing, hiding, conversation locking, blocking, and interaction limits.
+
+## 5. Security & Vulnerability Disclosure
+- Do **not** post exploits or sensitive security details publicly.
+- Report vulnerabilities privately via SECURITY.md instructions (or email maintainer).
+- Follow [Coordinated Disclosure](mdc:https:/docs.github.com/en/site-policy/security-policies/github-security-vulnerability-coordinated-disclosure-program) best practices.
+
+## 6. Acceptable Content
+- No malware, sexually obscene content, threats of violence, or discrimination.
+- Respect intellectual property—no unlicensed copied code or assets.
+
+## 7. Enforcement & Escalation
+- Maintainers may remove offending content, downgrade visibility, or block users per GitHub policies.
+- Severe or repeated violations will be reported to GitHub for further action.
+
+## 8. MCP Integration for GitHub
+
+### Working with GitHub MCP Server
+- Use GitHub MCP commands (e.g., `mcp_GitHub_list_issues`, `mcp_GitHub_get_pull_request`, `mcp_GitHub_create_pull_request`) to interact with repositories directly from your Cursor session.
+- Prefer MCP for fetching real-time repository data (issues, PRs, workflow runs) over manual CLI commands.
+- Automate routine tasks—labeling, merging, commenting—through MCP to ensure traceability and auditability.
+- Ensure required environment variables (like `GITHUB_PERSONAL_ACCESS_TOKEN`) are provided securely, as demonstrated in `mcp.json` with 1Password integration.
+
+### MCP-Enhanced Workflows
+- **Daily Sync**: List assigned issues or pending PR reviews via MCP before planning your day.
+- **Code Review**: Add review comments, approve changes, or request modifications using MCP commands without leaving the chat.
+- **CI / CD**: Trigger or re-run GitHub Actions workflows when debugging CI directly from MCP.
+- **Release Automation**: Generate release notes by querying merged PRs and commits through MCP.
+- **Moderation**: Quickly lock conversations, hide comments, or block abusive users using appropriate MCP calls.
+
+---
+
+_By following these rules we uphold GitHub's vision of an inclusive, collaborative platform where developers can do their best work._
