@@ -1,0 +1,400 @@
+---
+title: Effective Go – Cursor Rules
+language: go
+categories:
+  - effective-go
+version: 1
+description: |
+  Distilled heuristics from Google’s *Effective Go* plus Go team blog posts.
+  Drop this file into `.cursor/rules/` to surface contextually relevant advice
+  directly inside Cursor IDE while you write Go code.
+---
+- **Always run `gofmt`**
+  - Rationale: Formatting is not a matter of style debate in Go; the canonical `gofmt` output keeps diffs small and code bases consistent.
+  - Source: Effective Go – Formatting
+  - ✅ Good:
+    ```go
+    // Formatted by gofmt
+    if x := f(); x != nil {
+        return x
+    }
+    ```
+  - ❌ Bad:
+    ```go
+    if(x:=f() ) {return x}
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use tabs for indentation**
+  - Rationale: `gofmt` inserts tabs; editors that visualize tabs configure width. Spaces break the canonical style.
+  - Source: Effective Go – Formatting
+  - ✅ Good:
+    ```go
+    	if err != nil {
+    	    log.Fatal(err)
+    	}
+    ```
+  - ❌ Bad:
+    ```go
+        if err != nil {
+            log.Fatal(err)
+        }
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Wrap long lines, don’t hand‑align spaces**
+  - Rationale: Horizontal scrolling hurts readability; alignment is fragile under edits.
+  - Source: Effective Go – Formatting
+  - ✅ Good:
+    ```go
+    msg := fmt.Sprintf("%s: %d bytes copied from %s to %s",
+        op.Name, n, src, dst)
+    ```
+  - ❌ Bad:
+    ```go
+    msg := fmt.Sprintf("%s: %d bytes copied from %s to %s", op.Name, n, src, dst)
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use // comments; start doc with the name**
+  - Rationale: Tools like `go doc` and pkg.go.dev surface these comments as documentation.
+  - Source: Effective Go – Commentary
+  - ✅ Good:
+    ```go
+    // ParseFile parses the file at path and returns an *ast.File.
+    func ParseFile(path string) (*ast.File, error) {...}
+    ```
+  - ❌ Bad:
+    ```go
+    /* This function parses a file */
+    func ParseFile(path string) (*ast.File, error) {...}
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Give packages short, lower‑case, single‑word names**
+  - Rationale: Keeps import lines concise and avoids stutter (`http/httpclient` vs `http/client`).
+  - Source: Effective Go – Package names
+  - ✅ Good:
+    ```go
+    import "image/png"
+    ```
+  - ❌ Bad:
+    ```go
+    import "image/pngdecoder"
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Avoid stuttering: exported identifiers should omit package name**
+  - Rationale: `bytes.Buffer` not `bytes.BytesBuffer`; callers already import the package.
+  - Source: Effective Go – Package names
+  - ✅ Good:
+    ```go
+    type Client struct{ ... }
+    ```
+  - ❌ Bad:
+    ```go
+    type HttpClient struct{ ... }
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use MixedCaps (CamelCase) for exported identifiers**
+  - Rationale: Go rejects underscores in exported names; MixedCaps is the idiomatic convention.
+  - Source: Effective Go – Names
+  - ✅ Good:
+    ```go
+    func WriteTo(w io.Writer, data []byte) (int, error)
+    ```
+  - ❌ Bad:
+    ```go
+    func write_to(w io.Writer, data []byte) (int, error)
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Prefer `:=` for short variable declarations**
+  - Rationale: Reduces boilerplate and confines variables to the smallest scope.
+  - Source: Effective Go – Declarations
+  - ✅ Good:
+    ```go
+    n, err := io.Copy(dst, src)
+    ```
+  - ❌ Bad:
+    ```go
+    var n int
+    var err error
+    n, err = io.Copy(dst, src)
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Group related declarations in a single var block**
+  - Rationale: Signals conceptual grouping and shortens vertical space.
+  - Source: Effective Go – Declarations
+  - ✅ Good:
+    ```go
+    var (
+        ErrTimeout = errors.New("timeout")
+        ErrClosed  = errors.New("closed")
+    )
+    ```
+  - ❌ Bad:
+    ```go
+    var ErrTimeout = errors.New("timeout")
+    var ErrClosed  = errors.New("closed")
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Return early and omit `else` blocks**
+  - Rationale: Keeps the happy path unindented and improves scan‑ability.
+  - Source: Effective Go – Control structures
+  - ✅ Good:
+    ```go
+    if err != nil {
+        return err
+    }
+    process()
+    ```
+  - ❌ Bad:
+    ```go
+    if err != nil {
+        return err
+    } else {
+        process()
+    }
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Prefer `switch` over long `if` chains**
+  - Rationale: `switch` conveys intent, scales, and prevents fall‑through by default.
+  - Source: Effective Go – Control structures
+  - ✅ Good:
+    ```go
+    switch tok.Kind {
+    case token.Int:
+        ...
+    case token.String:
+        ...
+    default:
+        ...
+    }
+    ```
+  - ❌ Bad:
+    ```go
+    if tok.Kind == token.Int {
+        ...
+    } else if tok.Kind == token.String {
+        ...
+    } else {
+        ...
+    }
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Always check returned errors**
+  - Rationale: Ignoring an error discards vital program information and can lead to silent failures.
+  - Source: Effective Go – Error handling
+  - ✅ Good:
+    ```go
+    if err := json.NewEncoder(w).Encode(resp); err != nil {
+        return fmt.Errorf("encode response: %w", err)
+    }
+    ```
+  - ❌ Bad:
+    ```go
+    json.NewEncoder(w).Encode(resp) // error ignored
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Wrap errors with `%w` for context**
+  - Rationale: Allows error inspection with `errors.Is` / `errors.As` while adding context.
+  - Source: Go 1.13 Errors
+  - ✅ Good:
+    ```go
+    if err != nil {
+        return fmt.Errorf("read config: %w", err)
+    }
+    ```
+  - ❌ Bad:
+    ```go
+    return fmt.Errorf("read config: %v", err)
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use sentinel error variables, don’t compare error strings**
+  - Rationale: Package‑level variables allow consumers to check errors reliably.
+  - Source: Effective Go – Error handling
+  - ✅ Good:
+    ```go
+    var ErrNotFound = errors.New("not found")
+    ...
+    if errors.Is(err, store.ErrNotFound) { ... }
+    ```
+  - ❌ Bad:
+    ```go
+    if err.Error() == "not found" { ... }
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use `defer` to close resources**
+  - Rationale: `defer` guarantees execution and keeps open/close adjacent in source.
+  - Source: Effective Go – Defer, Panic, and Recover
+  - ✅ Good:
+    ```go
+    f, err := os.Open(path)
+    if err != nil {
+        return err
+    }
+    defer f.Close()
+    ```
+  - ❌ Bad:
+    ```go
+    f, _ := os.Open(path)
+    // close forgotten, leaks FD
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Treat nil slices as empty slices**
+  - Rationale: APIs should work the same whether a slice is nil or empty.
+  - Source: Effective Go – Slices
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Only the sender should close a channel**
+  - Rationale: Closing from the receiver causes panics and races.
+  - Source: Effective Go – Concurrency
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use `select` (with default or timeout) to avoid blocking goroutines indefinitely**
+  - Rationale: Select prevents goroutine leaks and enables responsive cancellation.
+  - Source: Effective Go – Concurrency
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Keep interfaces small; accept interfaces, return concrete types**
+  - Rationale: Small interfaces are easier to implement and mock; returning concrete simplifies callers.
+  - Source: Effective Go – Interfaces
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Pass `context.Context` as the first parameter when operations may block or be canceled**
+  - Rationale: Context propagates cancellation, deadlines, and request‑scoped data.
+  - Source: Go blog – context
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Call `wg.Add` before spawning goroutines and `wg.Wait` after**
+  - Rationale: Prevents races between Add and Wait and ensures graceful shutdown.
+  - Source: Go blog – Concurrency patterns
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Avoid blocking operations in global `init` functions**
+  - Rationale: Slows binary startup and complicates testing.
+  - Source: Effective Go – Initialization
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Prefer composite literals for struct initialization**
+  - Rationale: Clear, concise, and independent of field order.
+  - Source: Effective Go – Composite literals
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use pointer receivers when the method mutates the receiver or the struct is large**
+  - Rationale: Ensures modifications affect the caller and avoids copies.
+  - Source: Effective Go – Methods
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use value receivers for small, immutable types (e.g., `time.Time`‑like structs)**
+  - Rationale: Reduces allocations and keeps method sets intuitive.
+  - Source: Effective Go – Methods
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Keep `init` functions small and side‑effect free**
+  - Rationale: Tests can control initialization; package cycles remain manageable.
+  - Source: Effective Go – Initialization
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Design table‑driven tests**
+  - Rationale: Reduces duplication and covers edge cases systematically.
+  - Source: Testing techniques – Dave Cheney
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Provide executable examples in `example_test.go` for documentation**
+  - Rationale: `go test` runs them and pkg.go.dev shows output.
+  - Source: Effective Go – Examples
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Run `go vet`, `staticcheck`, and `go test` in CI**
+  - Rationale: Catches stylistic, correctness, and runtime issues early.
+  - Source: Go tools – vet
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use build tags (`//go:build`) for platform‑specific code**
+  - Rationale: Replaces old `+build` comments and clarifies file purpose.
+  - Source: Go 1.17 Build constraints
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Represent enums with `iota`**
+  - Rationale: Generates sequential, type‑safe constants with minimal code.
+  - Source: Effective Go – Constants
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use `strings.Builder` for efficient string concatenation in loops**
+  - Rationale: Avoids quadratic allocations of `+=` on strings.
+  - Source: Go blog – strings.Builder
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Avoid `time.Sleep` for synchronization in tests; use channels or mocks**
+  - Rationale: Makes tests faster and less flaky.
+  - Source: Testing – Concurrency
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Prefer structured logging (e.g., `log/slog`) over `fmt.Printf` in production code**
+  - Rationale: Enables log levels, machine parsing, and better observability.
+  - Source: Observability – Go
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Run `go mod tidy` to prune unused dependencies**
+  - Rationale: Keeps module definitions minimal and reproducible.
+  - Source: Go modules – Dependency management
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use generics sparingly; keep type parameters readable and use constraints**
+  - Rationale: Generics add power but can obscure code if overused.
+  - Source: Go 1.18 Generics – Proposal
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Profile before optimizing with `go test -bench` and `pprof`**
+  - Rationale: Ensures time is spent on real bottlenecks and changes improve performance.
+  - Source: Go blog – pprof
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Document concurrency expectations (goroutine safety) in exported APIs**
+  - Rationale: Callers need to know whether they must provide synchronization.
+  - Source: Effective Go – Concurrency
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use `sync.Mutex` or `sync/atomic` to protect shared data instead of channel multiplexing when simple**
+  - Rationale: Channels are for communication; mutexes for mutual exclusion.
+  - Source: Go blog – Share memory by communicating
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Avoid cgo unless absolutely necessary; it adds complexity and cost**
+  - Rationale: Pure Go builds are faster and more portable.
+  - Source: Effective Go – Cgo
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Minimize global state; prefer dependency injection**
+  - Rationale: Improves testability and avoids hidden coupling.
+  - Source: Design – Clean Go
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Use `errgroup.Group` to coordinate goroutines with context cancellation**
+  - Rationale: Simplifies error propagation and cleanup.
+  - Source: Go blog – errgroup
+  - ✅ Apply this guideline in idiomatic Go style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.

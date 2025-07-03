@@ -1,0 +1,387 @@
+---
+title: Effective Kotlin – Cursor Rules
+language: kotlin
+categories:
+  - effective-kotlin
+version: 1
+description: |
+  Practical heuristics distilled from Marcin Moskala’s *Effective Kotlin*.
+  Drop this file into `.cursor/rules/` to surface contextually relevant guidance
+  directly inside Cursor IDE.
+---
+
+- **Item 1 – Limit mutability**
+  - Rationale: Minimize mutable state to avoid shared‑state bugs and make code easier to reason about.
+  - Source: *Effective Kotlin*, Item 1
+  - ✅ Prefer `val` and immutable collections:
+    ```kotlin
+    val items = listOf(1, 2, 3)
+    ```
+  - ❌ Avoid unnecessary `var` and mutable collections:
+    ```kotlin
+    var items = mutableListOf(1, 2, 3)
+    ```
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 2 – Eliminate critical sections**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 2
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 3 – Eliminate platform types as soon as possible**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 3
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 4 – Minimize the scope of variables**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 4
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 5 – Specify your expectations for arguments and state, I expl…**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 5
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 6 – Prefer standard errors to custom ones**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 6
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 7 – Prefer a nullable or Result result type when the lack of …**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 7
+  - ✅ Make the absence of a value explicit:
+    ```kotlin
+    fun find(id: Id): Foo? = …
+    ```
+  - ❌ Don't throw exceptions for normal flow control.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 8 – Write unit tests), but let’s skip this aspect for now**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 8
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 9 – Write unit tests**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 9
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 10 – Obey the general contract when overriding equals**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 10
+  - ✅ Ensure equality respects the contract (reflexive, symmetric, transitive):
+    ```kotlin
+    data class Point(val x: Int, val y: Int)
+    ```
+  - ❌ Don't include mutable properties in `equals`/`hashCode`.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 11 – An operator’s meaning should be consistent with its funct…**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 11
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 12 – Use operators to increase readability**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 12
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 13 – Consider making types explicit**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 13
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 14 – Consider referencing receivers explicitly**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 14
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 15 – Properties should represent a state, not a behavior**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 15
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 16 – Avoid returning or operating on Unit?**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 16
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 17 – Consider naming arguments**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 17
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 18 – Respect coding conventions**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 18
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 19 – Do not repeat knowledge**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 19
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 20 – Do not repeat common algorithms**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 20
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 21 – Use generics when implementing common algorithms**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 21
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 22 – Avoid shadowing type parameters**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 22
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 23 – Consider using variance modifiers for generic types**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 23
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 24 – Reuse between different platforms by extracting common mo…**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 24
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 25 – Each function should be written in terms of a single leve…**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 25
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 26 – Use abstraction to protect code against changes**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 26
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 27 – Specify API stability**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 27
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 28 – Consider wrapping external APIs**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 28
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 29 – Minimize elements’ visibility**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 29
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 30 – Define contracts with documentation**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 30
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 31 – Respect abstraction contracts**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 31
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 32 – Consider factory functions instead of constructors**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 32
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 33 – Consider a primary constructor with named optional arguments**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 33
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 34 – Consider defining a DSL for complex object creation**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 34
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 35 – Consider using dependency injection**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 35
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 36 – Prefer composition over inheritance**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 36
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 37 – Use the data modifier to represent a bundle of data**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 37
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 38 – Use function types or functional interfaces to pass opera…**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 38
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 39 – Use sealed classes and interfaces to express restricted h…**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 39
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 40 – Prefer class hierarchies instead of tagged classes**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 40
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 41 – Use enum to represent a list of values**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 41
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 42 – Respect the contract of equals**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 42
+  - ✅ Ensure equality respects the contract (reflexive, symmetric, transitive):
+    ```kotlin
+    data class Point(val x: Int, val y: Int)
+    ```
+  - ❌ Don't include mutable properties in `equals`/`hashCode`.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 43 – Respect the contract of hashCode**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 43
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 44 – Respect the contract of compareTo)**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 44
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 45 – Consider extracting non-essential parts of your API into …**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 45
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 46 – Avoid member extensions**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 46
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 47 – Avoid unnecessary object creation**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 47
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 48 – Consider using object declarations**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 48
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 49 – Use caching when possible**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 49
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 50 – Extract objects that can be reused**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 50
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 51 – Use the inline modifier for functions with parameters of …**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 51
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 52 – Consider using inline value classes**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 52
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 53 – Eliminate obsolete object references**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 53
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 54 – Prefer Sequences for big collections with more than one p…**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 54
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 55 – Consider associating elements to a map**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 55
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 56 – Consider using groupingBy instead of groupBy**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 56
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 57 – Limit the number of operations**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 57
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 58 – Consider Arrays with primitives for performance-critical …**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 58
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 59 – Consider using mutable collections**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 59
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.
+- **Item 60 – Use appropriate collection types**
+  - Rationale: Applies the guideline to improve safety, readability, and performance.
+  - Source: *Effective Kotlin*, Item 60
+  - ✅ Apply this guideline in idiomatic Kotlin style.
+  - ❌ Don't ignore the principle without a strong reason.
+  - When to break: Rarely; only when it clearly improves clarity or performance.

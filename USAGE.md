@@ -55,11 +55,11 @@ cd /path/to/your/project
 
 | Module | Description | Best For |
 |--------|-------------|----------|
-| `base` | Core development principles | All projects (always included) |
 | `git` | Git version control workflows | All projects using Git |
 | `github` | GitHub platform features | Projects hosted on GitHub |
-| `kotlin` | Kotlin-specific development rules | Kotlin/Android projects |
-| `linear` | Linear issue management | Teams using Linear |
+| `effective_kotlin` | Kotlin-specific development rules | Kotlin/Android projects |
+| `effective_go` | Go development rules | Go projects |
+| `effective_rust` | Rust development rules | Rust projects |
 | `notion` | Documentation and knowledge management | Teams using Notion |
 
 ## 🔧 Usage Patterns
@@ -73,7 +73,7 @@ cd /path/to/your/project
 ### Pattern 2: Kotlin Android Project
 ```bash
 # Include Android/Kotlin focused modules
-./scripts/setup.sh --mode modular --modules git,github,kotlin,linear
+./scripts/setup.sh --mode modular --modules git,github,effective_kotlin,effective_go
 ```
 
 ### Pattern 3: Documentation-Heavy Project
@@ -113,7 +113,7 @@ echo -e "\n# === GIT RULES ===" >> .cursorrules
 cat /path/to/cursorrules/rules/git.md >> .cursorrules
 
 echo -e "\n# === KOTLIN RULES ===" >> .cursorrules
-cat /path/to/cursorrules/rules/kotlin.md >> .cursorrules
+cat /path/to/cursorrules/rules/effective_kotlin.md >> .cursorrules
 
 # Add to .gitignore
 echo ".cursorrules" >> .gitignore
@@ -127,8 +127,8 @@ mkdir -p .cursor-rules
 
 # Symlink specific modules
 ln -sf /path/to/cursorrules/rules/base.md .cursor-rules/
-ln -sf /path/to/cursorrules/rules/kotlin.md .cursor-rules/
 ln -sf /path/to/cursorrules/rules/git.md .cursor-rules/
+ln -sf /path/to/cursorrules/rules/effective_kotlin.md .cursor-rules/
 
 # Create main .cursorrules that includes them
 cat > .cursorrules << 'EOF'
@@ -149,7 +149,7 @@ Re-run the setup script to regenerate with updated modules:
 
 ```bash
 # Re-run setup to update
-./scripts/setup.sh --mode modular --modules git,kotlin,linear
+./scripts/setup.sh --mode modular --modules git,effective_kotlin
 ```
 
 Or use the update script:
@@ -195,11 +195,10 @@ You can combine different approaches:
 2. **Modular base + project templates**
    ```bash
    # Generate modular rules
-   ./scripts/setup.sh --mode modular --modules git,kotlin
+   ./scripts/setup.sh --mode modular --modules git,effective_kotlin
    
    # Add project template
    # Will be prompted during setup or copy manually
-   cp /path/to/cursorrules/templates/kotlin-project.md .cursorrules-project
    ```
 
 ## 🚀 Best Practices

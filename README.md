@@ -9,37 +9,34 @@ Following the official Cursor documentation, rules are organized as **Project Ru
 ```
 cursorrules/
 ├── README.md                 # This documentation
-├── .cursor/rules/           # Official Project Rules (MDC format)
-│   ├── base.mdc            # Core development principles (Always applied)
-│   ├── kotlin.mdc          # Effective Kotlin guidelines (Auto-attached to .kt/.kts)
-│   ├── git.mdc             # Git workflows (Auto-attached to git files)
-│   ├── github.mdc          # GitHub platform features (Auto-attached to .github/)
-│   ├── linear.mdc          # Linear integration (Agent requested)
-│   └── notion.mdc          # Notion documentation (Agent requested)
-├── scripts/                # Setup and maintenance scripts
-│   ├── setup.sh           # Main installation script
-│   ├── install-mcp-config.sh  # MCP server configuration installer
-│   └── update.sh          # Update existing installations
-├── templates/             # Project-specific rule templates
-│   ├── kotlin-project.md  # Kotlin project template
-│   └── web-project.md     # Web development template
-├── mcp.json              # MCP server configuration
-└── USAGE.md              # Detailed usage instructions
+├── .cursor/rules/            # Project Rules (MDC)
+│   ├── effective_kotlin.mdc  # Kotlin guidelines (auto-attaches to *.kt, *.kts)
+│   ├── effective_go.mdc      # Go guidelines (auto-attaches to *.go)
+│   ├── effective_rust.mdc    # Rust guidelines (auto-attaches to *.rs)
+│   ├── git.mdc               # Git workflows
+│   ├── github.mdc            # GitHub collaboration rules
+│   └── notion.mdc            # Notion documentation rules
+├── scripts/
+│   ├── setup.sh
+│   ├── install-mcp-config.sh
+│   └── update.sh
+├── mcp.json                  # MCP server configuration
+└── USAGE.md                  # Detailed usage instructions
 ```
 
 ## 🎯 Rule Categories
 
-### Always Applied Rules
-- **`base.mdc`** - Core development principles, SOLID principles, testing strategies
+### Auto-Attached Language Rules
+- **`effective_kotlin.mdc`** – Kotlin guidelines (auto-attaches to `*.kt`, `*.kts`)
+- **`effective_go.mdc`** – Go guidelines (auto-attaches to `*.go`)
+- **`effective_rust.mdc`** – Rust guidelines (auto-attaches to `*.rs`)
 
-### Auto-Attached Rules
-- **`kotlin.mdc`** - "Effective Kotlin" best practices (auto-attaches to `*.kt`, `*.kts`)
-- **`git.mdc`** - Git workflows and commit standards (auto-attaches to git files)
-- **`github.mdc`** - GitHub platform features and open source contribution guidelines (auto-attaches to `.github/`)
+### Platform & Workflow Rules
+- **`git.mdc`** – Git version-control workflows
+- **`github.mdc`** – GitHub collaboration & community guidelines
 
 ### Agent-Requested Rules
-- **`linear.mdc`** - Linear integration and issue management
-- **`notion.mdc`** - Documentation and knowledge management
+- **`notion.mdc`** – Notion documentation & knowledge management
 
 ## 🔧 MCP Server Integration
 
@@ -124,20 +121,12 @@ bash scripts/update.sh
 
 ### Language Support
 - **Kotlin**: Comprehensive "Effective Kotlin" guidelines with auto-attachment
-- **Git**: Version control best practices and conventional commits
-- **Universal**: Core development principles for any language
+- **Go**: Effective Go guidelines with auto-attachment
+- **Rust**: Effective Rust guidelines with auto-attachment
 
 ### Integration Support  
 - **GitHub**: Platform features, Actions, PR guidelines, open source contribution workflow
-- **Linear**: Issue management and project tracking
 - **Notion**: Documentation and knowledge management
-- **MCP Servers**: Real-time data access and tool integration
-
-### Open Source Contribution
-- **Project Discovery**: How to find good projects to contribute to
-- **Issue Selection**: Identifying well-scoped, beginner-friendly issues
-- **Contribution Workflow**: Complete guide from research to PR submission
-- **Best Practices**: Communication, code quality, and community engagement
 
 ## 📚 Learn More
 
